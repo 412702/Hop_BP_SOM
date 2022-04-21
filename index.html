@@ -1,0 +1,568 @@
+
+<!-- 
+    /**
+ * Author: Zhang Chunli
+ * From: Dalian University of Technology
+ * Data: 2022-03-31
+ * Encoding: uft-8
+*/
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>网络模拟演示</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./style/lib/bootstrap.min.2.css" />
+    <link rel="stylesheet" href="./style/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="./style/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="./style/lib/ionicons.min.css">
+    <link rel="stylesheet" href="./style/lib/AdminLTE.min.css">
+    <link rel="stylesheet" href="./style/lib/_all-skins.min.css">
+
+    <link rel="stylesheet" href="./style/index.css" />
+
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+    <!-- 弹窗 解释 -->
+    <div class="windows-all-screen" id="tips-info-dialog" style="display: none;">
+        <div class="msg-box-dialog">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><b>Tips</b></h3>
+                    </div>
+                    <div class="box-body">
+                        <div class=" tips-word-msg-box">
+                            <!--  -->
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-warning" id="tips-info-dialog-confirm"
+                            style="float: right; margin-left: 10px;">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="../" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>S</b>NN</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>Simulation</b>NN</span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only"></span>
+                </a>
+
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <!-- <img src="./img/avater.png" style="background-color: white;" class="img-circle" alt="User Image"> -->
+                        <img src="./favicon.ico" style="background-color: white;" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>网络模拟</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> 运行良好</a>
+                    </div>
+                </div>
+                <!-- search form -->
+                <div class="sidebar-form">
+                </div>
+                <div class="sidebar-form">
+                    <button class="btn btn-primary" style="width: 100%;"
+                        onclick="javascript: window.location.reload()"><b>Refresh</b></button>
+                </div>
+
+                <ul class="sidebar-menu" id="menu-link">
+                    <li><a href="#"><i class="fa fa-fw fa-header"></i> <span>Hopefield 网络</span></a></li>
+                    <li><a href="#"><i class="fa fa-fw fa-bold"></i> <span>BP 网络</span></a></li>
+                    <li><a href="#"><i class="fa fa-fw fa-car"></i> <span>SOM 网络</span></a></li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content-header">
+                <!-- Main content -->
+                <!-- hopefield network -->
+                <div class="row row-content" style="display: none;">
+                    <div class="col-md-12">
+                        <!-- 盒子主体 -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <i class="fa fa-fw fa-header"></i>
+
+                                <h3 class="box-title">Hopefield 网络</h3>
+
+                                <div class="box-tools pull-right">
+
+                                    <button type="button" class="btn btn-box-tool" id="Hopefield-info-tab"><i
+                                            class="fa fa-fw fa-question-circle"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <!--  -->
+                                <div class="col-md-9">
+                                    <div class="row justify-content-md-center" style="margin-bottom: 10px;">
+                                        <h3>训练</h3>
+                                    </div>
+
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-md">
+                                            <div class="row justify-content-md-center">
+                                                <canvas id="canvas-1" width="300" height="300"
+                                                    style="border:1px solid #000000;" />
+                                            </div>
+                                            <div class="row justify-content-md-center" style="margin:5px;">
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop1" type="button"
+                                                        class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        加载预设样式
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                        <a class="dropdown-item" id="dropdown-preset-random-1"
+                                                            href="#">随机散点</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-d-1" href="#">D</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-u-1" href="#">U</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-t-1" href="#">T</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-1949-1"
+                                                            href="#">1949</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="row justify-content-md-center">
+                                                <canvas id="canvas-2" width="300" height="300"
+                                                    style="border:1px solid #000000;" />
+                                            </div>
+                                            <div class="row justify-content-md-center" style="margin:5px;">
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop2" type="button"
+                                                        class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        加载预设样式
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                                                        <a class="dropdown-item" id="dropdown-preset-random-2"
+                                                            href="#">随机散点</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-d-2" href="#">D</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-u-2" href="#">U</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-t-2" href="#">T</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-1949-2"
+                                                            href="#">1949</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="row justify-content-md-center">
+                                                <canvas id="canvas-3" width="300" height="300"
+                                                    style="border:1px solid #000000;" />
+                                            </div>
+                                            <div class="row justify-content-md-center" style="margin:5px;">
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop3" type="button"
+                                                        class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        加载预设样式
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop3">
+                                                        <a class="dropdown-item" id="dropdown-preset-random-3"
+                                                            href="#">随机散点</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-d-3" href="#">D</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-u-3" href="#">U</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-t-3" href="#">T</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-1949-3"
+                                                            href="#">1949</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-md-center">
+                                        <button id="button-train" class="btn btn-danger" type="button">训练三个样式</button>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+
+                                    <div class="row justify-content-md-center">
+                                        <h3><b>预测</b></h3>
+
+                                    </div>
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-md">
+
+
+                                            <div class="row justify-content-md-center" style="margin: 5px;">
+                                                <canvas id="canvas-res" width="300" height="300"
+                                                    style="border:1px solid #000000;" />
+                                            </div>
+                                            <div class="row justify-content-md-center" style="margin:5px;">
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDropRes" type="button"
+                                                        class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        加载预设样式 + 噪声点
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDropRes">
+                                                        <a class="dropdown-item" id="dropdown-preset-d-noise" href="#">D
+                                                            + 噪声点</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-u-noise" href="#">U
+                                                            + 噪声点</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-t-noise" href="#">T
+                                                            + 噪声点</a>
+                                                        <a class="dropdown-item" id="dropdown-preset-1949-noise"
+                                                            href="#">1949 + 噪声点</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-md-center" style="margin: 5px;">
+                                                <button id="button-process" class="btn btn-danger"
+                                                    type="button">开始预测</button>
+                                            </div>
+
+                                            <div class="row justify-content-md-center" style="margin: 5px;">
+                                                <div class="progress" style="height: 30px; width: 300px;">
+                                                    <div id="progress-predict" class="progress-bar" role="progressbar"
+                                                        style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <!-- BP NN -->
+                <div class="row row-content" style="display: none;">
+                    <div class="col-md-12">
+                        <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <i class="fa fa-fw fa-bold"></i>
+                                <h3 class="box-title">BP 神经网络</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" id="bp-info-tab"><i
+                                            class="fa fa-fw fa-question-circle"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <!-- 模型输入参数 -->
+                                <div class="row col-md-12">
+                                    <div class="col-md-2 form-group">
+                                        <label>输入层神经元数：</label>
+                                        <input class="form-control" id="num_input_layer" placeholder="输入层神经元数" value="4"
+                                            disabled>
+                                    </div>
+
+                                    <div class="col-md-2 form-group">
+                                        <label>中间层神经元数：</label>
+                                        <input class="form-control" id="num_hidden_layer" placeholder="隐藏层神经元数"
+                                            value="7">
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label>输出层神经元数：</label>
+                                        <input class="form-control" id="num_output_layer" placeholder="输出层神经元数"
+                                            value="3" disabled>
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label>学习率：</label>
+                                        <input class="form-control" id="learn_rate" placeholder="学习率" value="0.05">
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label>训练Epoch上限：</label>
+                                        <input class="form-control" id="num_epoch" placeholder="模型训练Epoch上限"
+                                            value="10000">
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label>训练结束误差阈值：</label>
+                                        <input class="form-control" id="mse_threshold" placeholder="误差阈值" value="0.035">
+                                    </div>
+                                </div>
+
+                                <!-- 权重展示和网络模型展示 -->
+                                <div id="bp_model_visual" style="display: none;">
+                                    <!-- 输入层到隐藏层参数 -->
+                                    <div class="col-md-4">
+                                        <div class="box box-primary">
+                                            <div class="box-header with-border">
+                                                <i class="fa fa-bar-chart-o"></i>
+                                                <h3 class="box-title">层间权重：</h3>
+                                            </div>
+                                            <div class="box-body  weight-dispaly">
+                                                <div class="row col-md-12">
+                                                    <table id="input_hidden_weight"
+                                                        class="table table-bordered table-hover dataTable"></table>
+                                                </div>
+                                                <div class="row col-md-12">
+                                                    <table id="hidden_output_weight"
+                                                        class="table table-bordered table-hover dataTable"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 神经网络结构自动生成 -->
+                                    <div class="col-md-4">
+                                        <div id="bp-graph-container"></div>
+                                    </div>
+
+                                    <!-- 隐藏层到输出层权重 -->
+                                    <div class="col-md-4">
+                                        <div class="box box-primary">
+                                            <div class="box-header with-border">
+                                                <i class="fa fa-bar-chart-o"></i>
+                                                <h3 class="box-title">模型训练均方误差</h3>
+                                            </div>
+                                            <div class="box-body  weight-dispaly">
+                                                <div id="mse_line_chart" style="height: 100%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 模型结果  -->
+                                <div class="row col-md-12">
+                                    <div class="col-md-3 form-group">
+                                        <label>训练迭代终止Epoch：</label>
+                                        <input class="form-control" id="train_end_epoch" placeholder="- - - -" value=""
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>训练均方误差（MSE）：</label>
+                                        <input class="form-control" id="train_mse" placeholder="- - - -" value=""
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>训练集准确率：</label>
+                                        <input class="form-control" id="train_set_currency" placeholder="- - - -"
+                                            value="" disabled>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>测试集准确率：</label>
+                                        <input class="form-control" id="test_set_currency" placeholder="- - - -"
+                                            value="" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="box-footer with-border">
+                                <button class="btn btn-success pull-left" id="bp_load_dataset">加载预设训练集和测试集</button>
+
+
+
+                                <button class="btn btn-danger pull-right" id="bp_test_model"
+                                    style="margin-right: 30px;">开始测试</button>
+
+                                <button class="btn btn-info pull-right" id="bp_train_model"
+                                    style="margin-right: 30px;">开始训练</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 手动输入训练数据 与测试数据-->
+                    <div class="row col-md-12">
+                        <!-- 输入训练数据部分 -->
+                        <div class="col-md-6">
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <i class="fa fa-fw fa-bold"></i>
+                                    <h3 class="box-title">可选择手动输入训练数据：</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                                class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <textarea class="data_textarea" id="train_data_input_manual"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 输入测试数据部分 -->
+                        <div class="col-md-6">
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <i class="fa fa-fw fa-bold"></i>
+                                    <h3 class="box-title">可选择手动输入测试数据：</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                                class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <textarea class="data_textarea" id="test_data_input_manual"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOM NN -->
+                <div class="row row-content" style="display: none;">
+                    <div class="col-md-12">
+
+                        <div class="col-md-6">
+                            <div class=" box box-primary">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-fw fa-car"></i>
+                                    <h3 class="box-title">SOM 网 样本散点图</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                                class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row col-md-12" id="scatter_canvas_container">
+                                        <canvas id="scatter_canvas"></canvas>
+                                    </div>
+                                    <div class="row col-md">
+                                        <div class="col-md">
+                                            <div class="row justify-content-md-center" style="margin:5px;">
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop4" type="button"
+                                                        class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        加载数据
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop4">
+                                                        <a class="dropdown-item" id="dropdown-som-iris" href="#">鸢尾花数据</a>
+                                                        <a class="dropdown-item" id="dropdown-som-150-random" href="#">150个随机散点</a>
+                                                        <a class="dropdown-item" id="dropdown-som-300-random" href="#">300个随机散点</a>
+                                                        <a class="dropdown-item" id="dropdown-som-3000-random" href="#">3000个随机散点</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-fw fa-car"></i>
+                                    <h3 class="box-title">SOM 网演化</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" id="som-info-tab"><i
+                                                class="fa fa-fw fa-question-circle"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                                class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="col-md-12">
+                                        <canvas id = "drawCanvas" width = "500px" height="500px"></canvas>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-6 form-group">
+                                            <label>竞争层网格边长</label>
+                                            <input class="form-control" id="nodenum" placeholder="竞争层网格边长" value="5">
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>迭代次数</label>
+                                            <input class="form-control" id="itnum" placeholder="迭代次数" value="3000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-danger pull-right" id="startstop" onclick="startstop()"
+                                    style="margin-right: 30px;">暂停</button>
+
+                                    <button class="btn btn-info pull-right" id="generateNew"  onclick="generateNew()"
+                                    style="margin-right: 30px;">生成模型</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+    <!-- ./wrapper -->
+
+
+    <!-- 引用库 -->
+    <!-- jquery bootstrap-->
+    <script src="./script/lib/jquery.min.js"></script>
+    <script src="./script/lib/popper.min.js"></script>
+    <script src="./script/lib/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="./script/lib/adminlte.min.js"></script>
+    <!-- jquery 绘图 -->
+    <script src="./script/lib/jquery.flot.js"></script>
+    <script src="./script/lib/jquery.flot.resize.js"></script>
+
+    <!-- tips 信息  用JSON更方便，但是懒，不想构建了-->
+    <script src="./script/tips_content.js"></script>
+
+    <!-- Hopfield 逻辑处理 -->
+    <script src="./script/Hopfield/util.js"></script>
+    <script src="./script/Hopfield/script.js"></script>
+
+    <!-- BP 神经网络相关逻辑处理 -->
+    <script src="./script/BPNN/d3.v5.min.js"></script>
+    <script src="./script/BPNN/util.js"></script>
+    <script src="./script/BPNN/FCNN.js"></script>
+    <script src="./script/BPNN/BPdata.js"></script>
+    <script src="./script/BPNN/BPNetwork.js"></script>
+
+    <!-- SOM   -->
+    <script src="./script/SOM/irisData.js"></script>
+    <script src="./script/SOM/utils.js"></script>
+    <script src="./script/SOM/Chart.bundle.js"></script>
+    <script src="./script/SOM/som.js"></script>
+
+    <!-- 页面整体逻辑 -->
+    <script src="./script/index.js"></script>
+</body>
+
+</html>
