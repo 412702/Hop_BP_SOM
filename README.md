@@ -1,6 +1,8 @@
 # Hop_BP_SOM
 Hopefeild, BP(Back Propagation)，SOM（Self Organized Map）by Javascript and viualization. 使用JS和web实现HOP，BP，SOM网络
 
+自行体验
+https://justpasser.top/app/network/#
 
 ### 功能组成
 此代码实现了三种比较经典的网络，Hopefield，BP，SOM
